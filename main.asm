@@ -26,8 +26,8 @@ globalalloc(mac,2048,addr)
 globalalloc(wk,2048,addr+666)
 globalalloc(macf,19)
 globalalloc(wkf,34)
-luacall(writeString("macf",("%s\n"):format(genMAC(":"))))
-luacall(writeString("wkf",("%s\n"):format(genWK())))
+luacall(writeString("macf",("%s\n"):format(generateMAC())))
+luacall(writeString("wkf",("%s\n"):format(generateWK())))
 
 mac:
 push r14
