@@ -1,22 +1,17 @@
 [ENABLE]
 //code from here to '[DISABLE]' will be used to enable the cheat
 {$LUA}
-function generateMAC()
-    local MAC = ("XX:XX:XX:XX:XX:XX"):gsub("X", function()
-        local randomIDX = math.random(16)
-        return ("0123456789ABCDEF"):sub(randomIDX, randomIDX)
-    end)
-    return MAC
-end
+math.randomseed(os.time() + os.clock() * 1000) -- generates a unique seed for randomness
+local MAC = (("XX:XX:XX:XX:XX:XX"):gsub("X", function()
+    local randomIDX = math.random(16)
+    return ("0123456789ABCDEF"):sub(randomIDX, randomIDX)
+end))
 
-function generateWK()
-    local randomIDX
-    local WK = ""
-    for i = 1, 16 do
-        randomIDX = math.random(0, 255)
-        WK = ("%s%02x"):format(WK, math.random(0, randomIDX)):upper()
-    end
-    return WK
+local randomIDX
+local WK = ""
+for i = 1, 16 do
+    randomIDX = math.random(0, 255)
+    WK = ("%s%02x"):format(WK, math.random(0, randomIDX)):upper()
 end
 
 {$ASM}
@@ -26,8 +21,8 @@ globalalloc(mac,2048,addr)
 globalalloc(wk,2048,addr+666)
 globalalloc(macf,19)
 globalalloc(wkf,34)
-luacall(writeString("macf",("%s\n"):format(generateMAC())))
-luacall(writeString("wkf",("%s\n"):format(generateWK())))
+luacall(writeString("macf",("%s\n"):format(MAC)))
+luacall(writeString("wkf",("%s\n"):format(WK)))
 
 mac:
 push r14
